@@ -6,38 +6,95 @@
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-	<header th:replace="~{header}"></header>
+<!--	<header th:replace="~{header}"></header>-->
 	<hr>
 	<nav>
-		<a href="/items">全商品</a>
+		<a href="/tasks">全商品</a>
 		<a th:each="category:${categories}"
-	       th:href="@{/items(categoryId=${category.id})}"
+	       th:href="@{/tasks(categoryId=${category.id})}"
 	       th:text="${category.name}"
 	       style="margin-right: 5px;"></a>
-		<a href="/cart" style="padding-left: 10px;">カートを見る</a>
 	</nav>
 	<main>
-		<table>
+		ルーティン
+		<table border="1">
 			<tr>
-				<th>NO</th>
-				<th>商品名</th>
-				<th>値段</th>
-				<th></th>
+				<th>NO.</th>
+				<th>タイトル</th>
+				<th>カテゴリー</th>
+				<th>重要度</th>
+				<th>完了</th>
 			</tr>
-			<tr th:each="item:${items}">
-				<td th:text="${item.id}"></td>
-				<td th:text="${item.name}"></td>
-				<td th:text="${item.price}"></td>
+			<tr th:if="${task.routine > 0}" th:each="task:${tasks}">
+				<td th:text="${task.id}"></td>
+				<td><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a></td>
+				<td th:text="${task.categoryId}"></td>
+				<td th:text="${task.importance}"></td>
 				<td>
-					<form action="/cart/add" method="post">
-						<input type="hidden" name="itemId" th:value="${item.id}">
-						<button>カートに追加</button>
+					<form action="/tasks/{id}/complete(id=task.id)" method="post">
+						<input type="hidden" name="id" th:value="${task.id}">
+						<button>完了</button>
 					</form>
 				</td>
 			</tr>
 		</table>
+		
+		
+		本日
+		<table border="1">
+			<tr>
+				<th>NO.</th>
+				<th>タイトル</th>
+				<th>カテゴリー</th>
+				<th>重要度</th>
+				<th>完了</th>
+			</tr>
+			<tr th:if="${task.isToday}" th:each="task:${tasks}">
+				<td th:text="${task.id}"></td>
+				<td><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a></td>
+				<td th:text="${task.categoryId}"></td>
+				<td th:text="${task.importance}"></td>
+				<td>
+					<form action="/tasks/{id}/delete(id=task.id)" method="post">
+						<input type="hidden" name="id" th:value="${task.id}">
+						<button>完了</button>
+					</form>
+				</td>
+			</tr>
+		</table>
+				
+		全体
+		<table border="1">
+			<tr>
+				<th>NO.</th>
+				<th>タイトル</th>
+				<th>カテゴリー</th>
+				<th>期限</th>
+				<th>重要度</th>
+				<th>ルーティン</th>
+				<th>本日に追加</th>
+			</tr>
+			<tr th:each="task:${tasks}">
+				<td th:text="${task.id}"></td>
+				<td><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a></td>
+				<td th:text="${task.categoryId}"></td>
+				<td th:text="${task.deadline}"></td>
+				<td th:text="${task.importance}"></td>
+				<td th:text="${task.routine}"></td>
+				<td>
+					<form action="/tasks/{id}/addToday(id=task.id)" method="post">
+						<input type="hidden" name="isToday" th:value="${task.id}">
+						<button>追加</button>
+					</form>
+				</td>
+			</tr>
+		</table>
+		<form action="/tasks/add" method="get">
+			
+			<button>新規登録</button>
+		</form>
 	</main>
 	<hr>
-	<footer th:replace="~{footer}"></footer>
+<!--	<footer th:replace="~{footer}"></footer>-->
 </body>
 </html>

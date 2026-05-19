@@ -16,7 +16,7 @@ CREATE TABLE tasks (
     category_id INTEGER,
     user_id INTEGER,
     title TEXT NOT NULL,
-    closing_date DATE,
+    deadline DATE,
     importance INTEGER,
     routine INTEGER,
     memo TEXT,

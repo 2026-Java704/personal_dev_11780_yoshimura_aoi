@@ -8,19 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.model.Account;
 import com.example.demo.repository.UserRepository;
 
 @Controller
 public class AccountController {
 
 	private final HttpSession session;
-	private final Account account;
 	private final UserRepository userRepository;
 
-	public AccountController(HttpSession session, Account account, UserRepository userRepository) {
+	public AccountController(HttpSession session, UserRepository userRepository) {
 		this.session = session;
-		this.account = account;
 		this.userRepository = userRepository;
 	}
 
@@ -59,7 +56,7 @@ public class AccountController {
 		//			model.addAttribute("errorList", errorList);
 		//		}
 
-		return "login";
+		return "redirect:/tasks";
 	}
 
 	@GetMapping("/account")
