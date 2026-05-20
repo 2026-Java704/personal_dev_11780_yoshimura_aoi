@@ -24,6 +24,7 @@ public class TaskController {
 	public TaskController(TaskRepository taskRepository, CategoryRepository categoryRepository) {
 		this.taskRepository = taskRepository;
 		this.categoryRepository = categoryRepository;
+
 	}
 
 	@GetMapping("/tasks")
@@ -71,46 +72,76 @@ public class TaskController {
 	}
 
 	@GetMapping("/tasks/{id}/detail")
-	public String show(@PathVariable Integer id) {
+	public String show(@PathVariable Integer id,
+			Model model) {
 
+		List<Category> categoryList = categoryRepository.findAll();
+		model.addAttribute("categories", categoryList);
+
+		Task task = taskRepository.findById(id).get();
+		model.addAttribute("tasks", task);
 		return "detailTask";
 	}
 
-	@PostMapping("/tasks/{id}/edit")
-	public String edit(@PathVariable Integer id) {
+	@GetMapping("/tasks/{id}/edit")
+	public String edit(@PathVariable Integer id,
+			Model model) {
+		List<Category> categoryList = categoryRepository.findAll();
+		model.addAttribute("categories", categoryList);
 
+		Task task = taskRepository.findById(id).get();
+		model.addAttribute("tasks", task);
 		return "editTask";
 	}
 
-	@PostMapping("/tasks/{id}/detail")
+	@PostMapping("/tasks/{id}/edit")
 	public String update(
-			@RequestParam String title,
-			@RequestParam Integer categoryId,
-			@RequestParam LocalDate deadline,
-			@RequestParam Integer importance,
-			@RequestParam Integer routine,
-			@RequestParam String memo,
+			@PathVariable Integer id,
+			@RequestParam(defaultValue = "") String title,
+			@RequestParam(defaultValue = "") Integer categoryId,
+			@RequestParam(defaultValue = "") LocalDate deadline,
+			@RequestParam(defaultValue = "") Integer importance,
+			@RequestParam(defaultValue = "") Integer routine,
+			@RequestParam(defaultValue = "") String memo,
 			Model model) {
 
+		Task task = taskRepository.findById(id).get();
+
+		task.setTitle(title);
+		task.setCategoryId(categoryId);
+		task.setDeadline(deadline);
+		task.setImportance(importance);
+		task.setRoutine(routine);
+		task.setMemo(memo);
+
+		taskRepository.save(task);
 		return "redirect:/tasks";
 	}
 
 	@PostMapping("/tasks/{id}/delete")
 	public String delete(@PathVariable Integer id) {
-
-		//		task.delete(taskId);
-
+		taskRepository.deleteById(id);
 		return "redirect:/tasks";
 	}
 
 	@PostMapping("/tasks/{id}/addtoday")
 	public String addToday(@PathVariable Integer id) {
+		Task task = taskRepository.findById(id).get();
+		task.setIsToday(true);
 
+		taskRepository.save(task);
 		return "redirect:/tasks";
 	}
 
 	@PostMapping("/tasks/{id}/complete")
 	public String complete(@PathVariable Integer id) {
+		Task task = taskRepository.findById(id).get();
+		if (task.getRoutine() > 0 && task.getIsToday() == true) {
+			task.setIsToday(false);
+			taskRepository.save(task);
+		} else {
+			taskRepository.deleteById(id);
+		}
 
 		return "redirect:/tasks";
 	}

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>商品一覧</title>
-<link rel="stylesheet" href="/css/style.css">
+	<meta charset="UTF-8">
+	<title>タスク一覧</title>
+	<link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-<!--	<header th:replace="~{header}"></header>-->
+	<header th:replace="~{header}"></header>
 	<hr>
 	<nav>
-		<a href="/tasks">全商品</a>
-		<a th:each="category:${categories}"
-	       th:href="@{/tasks(categoryId=${category.id})}"
-	       th:text="${category.name}"
-	       style="margin-right: 5px;"></a>
+		<a href="/tasks">一覧</a>
+		<a th:each="category:${categories}" th:href="@{/tasks(categoryId=${category.id})}" th:text="${category.name}"
+			style="margin-right: 5px;"></a>
 	</nav>
 	<main>
 		ルーティン
@@ -25,21 +25,25 @@
 				<th>重要度</th>
 				<th>完了</th>
 			</tr>
-			<tr th:if="${task.routine > 0}" th:each="task:${tasks}">
+			<tr th:if="${task.routine > 0 and task.isToday == true}" th:each="task:${tasks}">
 				<td th:text="${task.id}"></td>
-				<td><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a></td>
-				<td th:text="${task.categoryId}"></td>
-				<td th:text="${task.importance}"></td>
+				<td><a th:href="@{/tasks/{id}/detail(id=${task.id})}" th:text="${task.title}"></a></td>
+				<td th:each="category:${categories}" th:if="${category.id==task.categoryId}" th:text="${category.name}">
+				</td>
+				<td th:switch="${task.importance}">
+					<div th:case="0">低</div>
+					<div th:case="1">中</div>
+					<div th:case="2">高</div>
+				</td>
 				<td>
-					<form action="/tasks/{id}/complete(id=task.id)" method="post">
-						<input type="hidden" name="id" th:value="${task.id}">
+					<form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post">
 						<button>完了</button>
 					</form>
 				</td>
 			</tr>
 		</table>
-		
-		
+
+
 		本日
 		<table border="1">
 			<tr>
@@ -51,18 +55,22 @@
 			</tr>
 			<tr th:if="${task.isToday}" th:each="task:${tasks}">
 				<td th:text="${task.id}"></td>
-				<td><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a></td>
-				<td th:text="${task.categoryId}"></td>
-				<td th:text="${task.importance}"></td>
+				<td><a th:href="@{/tasks/{id}/detail(id=${task.id})}" th:text="${task.title}"></a></td>
+				<td th:each="category:${categories}" th:if="${category.id==task.categoryId}" th:text="${category.name}">
+				</td>
+				<td th:switch="${task.importance}">
+					<div th:case="0">低</div>
+					<div th:case="1">中</div>
+					<div th:case="2">高</div>
+				</td>
 				<td>
-					<form action="/tasks/{id}/delete(id=task.id)" method="post">
-						<input type="hidden" name="id" th:value="${task.id}">
+					<form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post">
 						<button>完了</button>
 					</form>
 				</td>
 			</tr>
 		</table>
-				
+
 		全体
 		<table border="1">
 			<tr>
@@ -76,25 +84,32 @@
 			</tr>
 			<tr th:each="task:${tasks}">
 				<td th:text="${task.id}"></td>
-				<td><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a></td>
-				<td th:text="${task.categoryId}"></td>
+				<td><a th:href="@{/tasks/{id}/detail(id=${task.id})}" th:text="${task.title}"></a></td>
+				<td th:each="category:${categories}" th:if="${category.id==task.categoryId}" th:text="${category.name}">
+				</td>
 				<td th:text="${task.deadline}"></td>
-				<td th:text="${task.importance}"></td>
-				<td th:text="${task.routine}"></td>
+				<td th:switch="${task.importance}">
+					<div th:case="0">低</div>
+					<div th:case="1">中</div>
+					<div th:case="2">高</div>
+				</td>
+				<td th:switch="${task.routine}">
+					<div th:case="0">無</div>
+					<div th:case="1">有</div>
 				<td>
-					<form action="/tasks/{id}/addToday(id=task.id)" method="post">
-						<input type="hidden" name="isToday" th:value="${task.id}">
+					<form th:action="@{/tasks/{id}/addtoday(id=${task.id})}" method="post">
 						<button>追加</button>
 					</form>
 				</td>
 			</tr>
 		</table>
 		<form action="/tasks/add" method="get">
-			
+
 			<button>新規登録</button>
 		</form>
 	</main>
 	<hr>
-<!--	<footer th:replace="~{footer}"></footer>-->
+	<footer th:replace="~{footer}"></footer>
 </body>
+
 </html>

@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>商品一覧</title>
+	<title>タスク新規登録</title>
 	<link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -21,10 +21,9 @@
 				<tr>
 					<th>カテゴリー</th>
 					<th>
-						<select>
-							<!--						<option th:value="0" >選択してください</option>-->
+						<select name="categoryId">
 							<option th:each="category : ${categories}" th:value="${category.id}"
-								th:text="${category.name}" name="categoryId"></option>
+								th:text="${category.name}" ></option>
 						</select>
 					</th>
 				</tr>

@@ -1,43 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>商品一覧</title>
-<link rel="stylesheet" href="/css/style.css">
+	<meta charset="UTF-8">
+	<title>タスク詳細</title>
+	<link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-	<header th:replace="~{header}"></header>
+	<!--	<header th:replace="~{header}"></header>-->
 	<hr>
-	<nav>
-		<a href="/items">全商品</a>
-		<a th:each="category:${categories}"
-	       th:href="@{/items(categoryId=${category.id})}"
-	       th:text="${category.name}"
-	       style="margin-right: 5px;"></a>
-		<a href="/cart" style="padding-left: 10px;">カートを見る</a>
-	</nav>
+
 	<main>
-		<table>
+
+		<table border="1">
 			<tr>
-				<th>NO</th>
-				<th>商品名</th>
-				<th>値段</th>
-				<th></th>
+				<th>タイトル</th>
+				<th th:text="${tasks.title}"></th>
 			</tr>
-			<tr th:each="item:${items}">
-				<td th:text="${item.id}"></td>
-				<td th:text="${item.name}"></td>
-				<td th:text="${item.price}"></td>
-				<td>
-					<form action="/cart/add" method="post">
-						<input type="hidden" name="itemId" th:value="${item.id}">
-						<button>カートに追加</button>
-					</form>
-				</td>
+			<tr>
+				<th>カテゴリー</th>
+				<th th:each="category:${categories}" th:if="${category.id==tasks.categoryId}"
+					th:text="${category.name}"></th>
+			</tr>
+			<tr>
+				<th>期日</th>
+				<th th:text="${tasks.deadline}"></th>
+			</tr>
+			<tr>
+				<th>重要度</th>
+				<th th:switch="${tasks.importance}">
+					<div th:case="0">低</div>
+					<div th:case="1">中</div>
+					<div th:case="2">高</div>
+				</th>
+			</tr>
+			<tr>
+				<th>ルーティーン</th>
+				<th th:switch="${tasks.routine}">
+					<div th:case="0">無</div>
+					<div th:case="1">有</div>
+				</th>
+			</tr>
+			<tr>
+				<th>備考</th>
+				<th th:text="${tasks.memo}"></th>
 			</tr>
 		</table>
+		<form th:action="@{/tasks/{id}/edit(id=${tasks.id})}" method="get">
+			<button>更新</button>
+		</form>
+		<form th:action="@{/tasks/{id}/delete(id=${tasks.id})}" method="post">
+			<button>削除</button>
+		</form>
+		<form action="/tasks" method="get">
+			<button>戻る</button>
+		</form>
 	</main>
 	<hr>
-	<footer th:replace="~{footer}"></footer>
+	<!--	<footer th:replace="~{footer}"></footer>-->
 </body>
+
 </html>

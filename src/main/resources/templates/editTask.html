@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>タスク更新</title>
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+	<!--	<header th:replace="~{header}"></header>-->
+	<hr>
+
+	<main>
+		<form th:action="@{/tasks/{id}/edit(id=${tasks.id})}" method="post">
+			<table border="1">
+				<tr>
+					<th>タイトル</th>
+					<th><input type="text" name="title" th:value="${tasks.title}"></th>
+				</tr>
+				<tr>
+					<th>カテゴリー</th>
+					<th>
+						<select name="categoryId">
+							<option th:each="category : ${categories}" th:value="${category.id}"
+								th:text="${category.name}" th:selected="${category.id == tasks.categoryId}"></option>
+						</select>
+					</th>
+				</tr>
+				<tr>
+					<th>期日</th>
+					<th><input type="date" name="deadline" th:value="${tasks.deadline}"></th>
+				</tr>
+				<tr>
+					<th>重要度</th>
+					<th>
+						<label><input type="radio" value="0" name="importance" th:checked="${tasks.importance == 0}">低</label>
+						<label><input type="radio" value="1" name="importance" th:checked="${tasks.importance == 1}">中</label>
+						<label><input type="radio" value="2" name="importance" th:checked="${tasks.importance == 2}">高</label>
+					</th>
+				</tr>
+				<tr>
+					<th>ルーティーン</th>
+					<th th:value="${tasks.routine}">
+						<label><input type="radio" value="0" name="routine" th:checked="${tasks.routine == 0}">無</label>
+						<label><input type="radio" value="1" name="routine" th:checked="${tasks.routine == 1}">有</label>
+					</th>
+				</tr>
+				<tr>
+					<th>備考</th>
+					<th><textarea name="memo" th:text="${tasks.memo}"></textarea></th>
+				</tr>
+			</table>
+			<button>更新</button>
+		</form>
+		<form th:action="@{/tasks/{id}/detail(id=${tasks.id})}" method="get">
+			<button>戻る</button>
+		</form>
+	</main>
+	<hr>
+	<!--	<footer th:replace="~{footer}"></footer>-->
+</body>
+
+</html>

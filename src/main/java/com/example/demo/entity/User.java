@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +21,9 @@ public class User {
 	private String email; // メールアドレス
 
 	private String password;
+
+	@Column(name = "last_login_date")
+	private LocalDate lastLoginDate;
 
 	// コンストラクタ
 	public User() {
@@ -50,6 +56,14 @@ public class User {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public LocalDate getLastLoginDate() {
+		return lastLoginDate;
+	}
+
+	public void setLastLoginDate(LocalDate lastLoginDate) {
+		this.lastLoginDate = lastLoginDate;
 	}
 
 }
