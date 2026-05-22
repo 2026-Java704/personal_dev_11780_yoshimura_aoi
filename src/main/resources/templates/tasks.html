@@ -15,15 +15,15 @@
 		<a th:each="category:${categories}" th:href="@{/tasks(categoryId=${category.id},keyword=${keyword})}" th:text="${category.name}"
 			 style="margin-right: 5px;"></a>
 		<form action="/tasks" method="get">
-			<input type="text" name="keyword" th:value="${keyword}"  placeholder="タスク名">
-			<button>検索</button>
+			<input class="form-input" type="text" name="keyword" th:value="${keyword}"  placeholder="タスク名検索">
+			<button id="btn-search" >検索</button>
 		</form>
 		<a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='deadlineAsc')}">期日</a>
 		<a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='importanceAsc')}">重要度</a>
 		<a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='routineAsc')}">ルーティーン</a>
 	</nav>
 	<main>
-		ルーティン
+		<h3>ルーティン</h3>
 		<table border="1">
 			<tr>
 				<th>NO.</th>
@@ -51,7 +51,7 @@
 		</table>
 
 
-		本日
+		<h3>本日</h3>
 		<table border="1">
 			<tr>
 				<th>NO.</th>
@@ -78,7 +78,7 @@
 			</tr>
 		</table>
 
-		全体
+		<h3>全体</h3>
 		<table border="1">
 			<tr>
 				<th>NO.</th>

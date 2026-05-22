@@ -82,6 +82,7 @@ public class AccountController {
 
 		errorList.add("メールアドレスとパスワードが一致しませんでした");
 		model.addAttribute("errorList", errorList);
+		model.addAttribute("email", email);
 		return "login";
 
 	}

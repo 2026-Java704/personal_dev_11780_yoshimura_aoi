@@ -1,80 +1,190 @@
 /* 全体 */
 body {
-	background-color: rgb(248, 193, 180); /* 背景色  */
-	text-align: center; /* 中央寄せ */
-    min-width: 900px; /* 最小幅 */
-}
-/* ヘッダー、ナビゲーションメニュー、フッター */
-header, nav, footer {
-	background-color: #45496a; /* 背景色 */
-	color: #ffffff; /* 文字色 */
-	padding-top: 5px; /* 内側余白(上) */
-	padding-bottom: 5px; /* 内側余白(下) */
-}
-/* ヘッダー、ナビゲーション内リンク */
-header a, nav a {
-	color: #ffffff;
-}
-/* ヘッダー内見出し */
-header h1 {
-  position: relative;
-  background: rgb(128, 128, 255);
-  box-shadow: 0px 0px 0px 5px rgb(128, 255, 255);
-  border: dashed 2px rgb(0, 0, 0);
-  padding: 0.2em 0.5em;
-  color: #454545;
+	background-color: rgb(219, 208, 164);
+	/* 背景色  */
+	text-align: center;
+	/* 中央寄せ */
+	min-width: 900px;
+	/* 最小幅 */
 }
 
-header h1:after {
-  position: absolute;
-  content: '';
-  left: -7px;
-  top: -7px;
-  border-width: 0 0 15px 15px;
-  border-style: solid;
-  border-color: #fff #fff #a8d4ff;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+/* ヘッダー、ナビゲーションメニュー、フッター */
+header,
+nav,
+footer {
+	background-color: rgb(227, 204, 170);
+	/* 背景色 */
+	color: #ffffff;
+	/* 文字色 */
+	padding-top: 5px;
+	/* 内側余白(上) */
+	padding-bottom: 5px;
+	/* 内側余白(下) */
 }
+
+/* ヘッダー、ナビゲーション内リンク */
+.header-a1 {
+	padding-right: 7px;
+	color: rgb(255, 255, 255);
+	border: 2px solid #ffffff;
+	margin: 3px;
+	text-decoration: none;
+	text-shadow: 2px 1px #c7edff, 4px 2px #9acee7, 6px 3px #6bbade;
+}
+
+.header-a2,
+nav a {
+	color: rgb(255, 255, 255);
+	background-color: rgb(218, 186, 137);
+	border: 2px solid #ffffff;
+	margin: 3px;
+	text-decoration: none;
+}
+
+.login-name {
+	color: rgb(255, 255, 255);
+	border-color: 2px solid #ffffff;
+	margin: 3px;
+}
+
+.parent {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.logout-a {
+	color: rgb(255, 255, 255);
+	/*	background-color: rgb(218, 186, 137);*/
+	border-bottom: 2px solid #ffffff;
+	margin: 3px;
+	text-decoration: none;
+}
+
+/* ヘッダー内見出し */
+#bg-h1 {
+	position: relative;
+	background-image: url(tree.jpg);
+	box-shadow: 0px 0px 0px 5px rgb(128, 64, 64);
+	padding: 0.8em 1em;
+	font-family: fantasy;
+	background-color: transparent;
+}
+
+
 /* 仕切り線 */
 hr {
-	border-top: 2px dashed #7d8bae;
+	border-top: 2px dashed rgb(64, 128, 128);
 }
+
 /* メイン */
 main {
-	background-color: #FFFFFF;
+	background-color: rgb(249, 252, 205);
 	min-height: 50px;
 	padding: 20px;
 }
-/* 表線 */
-table, th, td {
-	border-collapse: collapse;
-	border: 1px solid #7d8bae;
-}
-/* 表 */
+
+
 table {
-    margin: 5px auto;
-    min-width: 800px;
+	border-collapse: separate;
+	border-spacing: 5px;
+	margin: 5px auto;
+	min-width: 800px;
 }
-/* 表見出しセル */
+
+table th,
+table td {
+	border-radius: 5px;
+	text-align: center;
+	padding: 10px 0;
+}
+
 table th {
-	background: #7d8bae;
-	color: #ffffff;
+	background-color: #c79852;
+	color: white;
+	border: solid 1px #927141;
 }
+
+table td {
+	background-color: rgb(227, 204, 170);
+	border: solid 1px #af9d85;
+}
+
 /* 送信ボタン */
 button {
-	margin: 2px;
-	padding: 5px 20px;
-	background-color: #e5857b;
-	color: #ffffff;
+
+	padding: 10px 15px;
+	background-color: #c79852;
+
 	border: none;
-	width:150px;
 	cursor: pointer;
+	border-radius: 10px;
+	border: 1px solid #927141;
+	font-weight: bold;
+	color: rgb(255, 255, 255);
 }
+
 /* 送信ボタン(マウスオーバー時) */
 button:hover {
 	background-color: #f1b2b2;
 }
 
-#pcolor{
+#btn-search {
+	margin: 4px;
+	padding: 2px 5px;
+	background-color: rgb(218, 186, 137);
+	color: rgb(255, 255, 255);
+	cursor: pointer;
+	border: 2px solid #ffffff;
+	border-radius: 0px;
+}
+
+main a {
+	text-decoration: none;
+	padding: 2px 10px;
+	font-weight: bold;
+	color: rgb(255, 255, 255);
+	border: 1px solid #927141;
+	background-color: #c79852;
+	border-radius: 5px;
+}
+
+
+
+#pcolor {
 	color: red;
 }
+
+input,
+textarea {
+	padding: 2px 2px;
+	font-weight: bold;
+	color: rgb(255, 255, 255);
+	border: 2px solid rgb(255, 255, 255);
+	background-color: rgb(218, 186, 137);
+}
+
+.form-input::placeholder {
+	color: rgb(83, 83, 83);
+}
+
+h3 {
+	font-size: 22px;
+	color: #927141;
+	font-family:fantasy;
+	text-shadow: 2px 2px rgb(192, 192, 192);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
