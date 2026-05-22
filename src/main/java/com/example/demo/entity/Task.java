@@ -19,7 +19,7 @@ public class Task {
 	@Column(name = "category_id")
 	private Integer categoryId;
 
-	@Column(name = "userId")
+	@Column(name = "user_id")
 	private Integer userId;
 
 	private String title;

@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	List<User> findByLastLoginDate(LocalDate lastLoginDate);
 
+	Boolean existsByEmail(String email);
+
 }

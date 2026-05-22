@@ -86,55 +86,46 @@ public class AccountController {
 
 	}
 
-}
+	@GetMapping("/account")
+	public String create() {
 
-//	@GetMapping("/account")
-//	public String create() {
-//
-//		return "accountForm";
-//	}
-//
-//	@PostMapping("/account")
-//	public String store(
-//			@RequestParam(defaultValue = "") String name,
-//			@RequestParam(defaultValue = "") String address,
-//			@RequestParam(defaultValue = "") String tel,
-//			@RequestParam(defaultValue = "") String email,
-//			@RequestParam(defaultValue = "") String password,
-//			Model model) {
-//		//		List<String> errorList = new ArrayList<>();
-//		//		User user = new User(name, address, tel, email, password);
-//		//
-//		//		if (name.length() == 0) {
-//		//			errorList.add("名前は必須です");
-//		//		}
-//		//
-//		//		if (address.length() == 0) {
-//		//			errorList.add("住所は必須です");
-//		//		}
-//		//
-//		//		if (tel.length() == 0) {
-//		//			errorList.add("電話番号は必須です");
-//		//		}
-//		//
-//		//		if (email.length() == 0) {
-//		//			errorList.add("メールアドレスは必須です");
-//		//		}
-//		//
-//		//		if (password.length() == 0) {
-//		//			errorList.add("パスワードは必須です");
-//		//		}
-//		//
-//		//		if (userRepository.existsByEmail(email) == true) {
-//		//			errorList.add("登録済みのメールアドレスです");
-//		//		}
-//		//
-//		//		if (errorList.size() > 0) {
-//		//			model.addAttribute("errorList", errorList);
-//		//			return "accountForm";
-//		//		}
-//		//
-//		//		userRepository.save(user);
-//		return "redirect:/login";
-//
-//	}
+		return "accountForm";
+	}
+
+	@PostMapping("/account")
+	public String store(
+			@RequestParam(defaultValue = "") String name,
+			@RequestParam(defaultValue = "") String email,
+			@RequestParam(defaultValue = "") String password,
+			Model model) {
+		List<String> errorList = new ArrayList<>();
+		User user = new User(name, email, password);
+
+		if (name.length() == 0) {
+			errorList.add("名前は必須です");
+		}
+
+		if (email.length() == 0) {
+			errorList.add("メールアドレスは必須です");
+		}
+
+		if (password.length() == 0) {
+			errorList.add("パスワードは必須です");
+		}
+
+		if (userRepository.existsByEmail(email) == true) {
+			errorList.add("登録済みのメールアドレスです");
+		}
+
+		if (errorList.size() > 0) {
+			model.addAttribute("errorList", errorList);
+			model.addAttribute("name", name);
+			model.addAttribute("email", email);
+			return "accountForm";
+		}
+
+		userRepository.save(user);
+		return "redirect:/login";
+
+	}
+}

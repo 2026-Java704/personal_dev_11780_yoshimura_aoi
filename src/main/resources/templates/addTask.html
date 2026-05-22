@@ -8,54 +8,55 @@
 </head>
 
 <body>
-	<!--	<header th:replace="~{header}"></header>-->
+		<header th:replace="~{header}"></header>
 	<hr>
 
 	<main>
+		<p id="pcolor" th:if="${errorList}" th:each="error:${errorList}" th:text="${error}"></p>
 		<form action="/tasks/add" method="post">
 			<table border="1">
 				<tr>
 					<th>タイトル</th>
-					<th><input type="text" name="title"></th>
+					<td><input type="text" name="title" th:value="${tasks.title}"></td>
 				</tr>
 				<tr>
 					<th>カテゴリー</th>
-					<th>
+					<td>
 						<select name="categoryId">
 							<option th:each="category : ${categories}" th:value="${category.id}"
 								th:text="${category.name}" ></option>
 						</select>
-					</th>
+					</td>
 				</tr>
 				<tr>
 					<th>期日</th>
-					<th><input type="date" name="deadline"></th>
+					<td><input type="date" name="deadline" th:value="${tasks.deadline}"></td>
 				</tr>
 				<tr>
 					<th>重要度</th>
-					<th>
-						<label><input type="radio" value="0" name="importance" checked>低</label>
-						<label><input type="radio" value="1" name="importance">中</label>
-						<label><input type="radio" value="2" name="importance">高</label>
-					</th>
+					<td>
+						<label><input type="radio" value="0" name="importance" th:checked="${tasks.importance==0}">低</label>
+						<label><input type="radio" value="1" name="importance" th:checked="${tasks.importance==1}">中</label>
+						<label><input type="radio" value="2" name="importance" th:checked="${tasks.importance==2}">高</label>
+					</td>
 				</tr>
 				<tr>
 					<th>ルーティーン</th>
-					<th>
-						<label><input type="radio" value="0" name="routine" checked>無</label>
-						<label><input type="radio" value="1" name="routine">有</label>
-					</th>
+					<td>
+						<label><input type="radio" value="0" name="routine" th:checked="${tasks.routine==0}">無</label>
+						<label><input type="radio" value="1" name="routine" th:checked="${tasks.routine==1}">有</label>
+					</td>
 				</tr>
 				<tr>
 					<th>備考</th>
-					<th><textarea name="memo"></textarea></th>
+					<td><textarea name="memo"></textarea></td>
 				</tr>
 			</table>
 			<button>新規登録</button>
 		</form>
 	</main>
 	<hr>
-	<!--	<footer th:replace="~{footer}"></footer>-->
+		<footer th:replace="~{footer}"></footer>
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 /* 全体 */
 body {
-	background-color: #EFF0F7; /* 背景色  */
+	background-color: rgb(248, 193, 180); /* 背景色  */
 	text-align: center; /* 中央寄せ */
     min-width: 900px; /* 最小幅 */
 }
@@ -17,8 +17,23 @@ header a, nav a {
 }
 /* ヘッダー内見出し */
 header h1 {
-	font-size: 20pt;
-	margin: 10px auto;
+  position: relative;
+  background: rgb(128, 128, 255);
+  box-shadow: 0px 0px 0px 5px rgb(128, 255, 255);
+  border: dashed 2px rgb(0, 0, 0);
+  padding: 0.2em 0.5em;
+  color: #454545;
+}
+
+header h1:after {
+  position: absolute;
+  content: '';
+  left: -7px;
+  top: -7px;
+  border-width: 0 0 15px 15px;
+  border-style: solid;
+  border-color: #fff #fff #a8d4ff;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
 }
 /* 仕切り線 */
 hr {

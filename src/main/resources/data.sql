@@ -1,6 +1,6 @@
 -- カテゴリーテーブルデータ
 INSERT INTO categories  (name)
-VALUES ('仕事'),('プライベート');
+VALUES ('仕事'),('プライベート'),('その他');
 
 -- tasks テーブルデータ
 INSERT INTO tasks (category_id, user_id, title, deadline, importance, routine, memo, is_today)
