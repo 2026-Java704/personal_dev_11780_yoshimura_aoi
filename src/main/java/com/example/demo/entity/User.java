@@ -60,6 +60,12 @@ public class User {
 	public LocalDate getLastLoginDate() {
 		return lastLoginDate;
 	}
+	
+	
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public void setLastLoginDate(LocalDate lastLoginDate) {
 		this.lastLoginDate = lastLoginDate;

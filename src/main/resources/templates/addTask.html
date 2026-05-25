@@ -35,9 +35,9 @@
 				<tr>
 					<th>重要度</th>
 					<td>
-						<label><input type="radio" value="0" name="importance" th:checked="${tasks.importance==0}">低</label>
-						<label><input type="radio" value="1" name="importance" th:checked="${tasks.importance==1}">中</label>
-						<label><input type="radio" value="2" name="importance" th:checked="${tasks.importance==2}">高</label>
+						<input type="radio" value="0" name="importance" th:checked="${tasks.importance==0}"><label>低</label>
+						<input type="radio" value="1" name="importance" th:checked="${tasks.importance==1}"><label>中</label>
+						<input type="radio" value="2" name="importance" th:checked="${tasks.importance==2}"><label>高</label>
 					</td>
 				</tr>
 				<tr>
@@ -52,8 +52,13 @@
 					<td><textarea name="memo"></textarea></td>
 				</tr>
 			</table>
+			<span class="parent-center">
 			<button>新規登録</button>
 		</form>
+		<form action="/tasks" method="get">
+			<button>戻る</button>
+		</form>
+		</span>
 	</main>
 	<hr>
 		<footer th:replace="~{footer}"></footer>

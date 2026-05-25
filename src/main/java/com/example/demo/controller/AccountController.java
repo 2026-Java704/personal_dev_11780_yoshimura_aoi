@@ -56,14 +56,14 @@ public class AccountController {
 			model.addAttribute("errorList", errorList);
 			return "login";
 		}
-
+		List<Task> task = taskRepository.findAll();
 		List<User> user = userRepository.findAll();
 		for (User login : user) {
 			if (login.getEmail().equals(email) && login.getPassword().equals(password)) {
 				LocalDate nowLoginDate = LocalDate.now();
 
 				if (!(nowLoginDate.equals(login.getLastLoginDate()))) {
-					List<Task> task = taskRepository.findAll();
+
 					for (Task todayOn : task) {
 						if (todayOn.getRoutine() > 0) {
 							todayOn.setIsToday(true);

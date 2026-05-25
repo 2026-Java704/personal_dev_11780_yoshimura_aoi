@@ -47,9 +47,16 @@ nav a {
 	margin: 3px;
 }
 
-.parent {
+.parent-end {
 	display: flex;
 	justify-content: flex-end;
+}
+
+.parent-center {
+	display: flex;
+	justify-content: center;
+	gap:40px;
+	
 }
 
 .logout-a {
@@ -155,16 +162,17 @@ main a {
 }
 
 input,
-textarea {
+textarea,
+select {
 	padding: 2px 2px;
 	font-weight: bold;
-	color: rgb(255, 255, 255);
+	color: #454545;
 	border: 2px solid rgb(255, 255, 255);
 	background-color: rgb(218, 186, 137);
 }
 
 .form-input::placeholder {
-	color: rgb(83, 83, 83);
+	color: rgb(255, 255, 255);
 }
 
 h3 {
@@ -174,8 +182,25 @@ h3 {
 	text-shadow: 2px 2px rgb(192, 192, 192);
 	}
 
+.improtance-0{
+	color: rgb(0, 128, 255);
+	font-weight: bold;
+}
 
+.improtance-1{
+	color: rgb(255, 128, 0);
+		font-weight: bold;
+}
 
+.improtance-2{
+	color: rgb(255, 0, 0);
+		font-weight: bold;
+}
+
+.active {
+    color: #454545;;
+    font-weight: bold; /* 視認性を上げるため（任意） */
+}
 
 
 

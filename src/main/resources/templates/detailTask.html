@@ -47,6 +47,7 @@
 				<th th:text="${tasks.memo}"></th>
 			</tr>
 		</table>
+		<span class="parent-center">
 		<form th:action="@{/tasks/{id}/edit(id=${tasks.id})}" method="get">
 			<button>更新</button>
 		</form>
@@ -56,6 +57,7 @@
 		<form action="/tasks" method="get">
 			<button>戻る</button>
 		</form>
+		</span>
 	</main>
 	<hr>
 	<!--	<footer th:replace="~{footer}"></footer>-->

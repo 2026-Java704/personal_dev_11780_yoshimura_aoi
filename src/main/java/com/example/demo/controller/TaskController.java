@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Task;
+import com.example.demo.model.Account;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.TaskRepository;
 
@@ -21,10 +22,12 @@ public class TaskController {
 
 	private final TaskRepository taskRepository;
 	private final CategoryRepository categoryRepository;
+	private final Account account;
 
-	public TaskController(TaskRepository taskRepository, CategoryRepository categoryRepository) {
+	public TaskController(TaskRepository taskRepository, CategoryRepository categoryRepository, Account account) {
 		this.taskRepository = taskRepository;
 		this.categoryRepository = categoryRepository;
+		this.account = account;
 
 	}
 
@@ -40,57 +43,67 @@ public class TaskController {
 
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categories", categoryList);
+
+		// ログイン中のユーザーIDを取得
+		Integer userId = account.getId();
 		List<Task> taskList = null;
 
-		//カテゴリーIDとキーワード
+		// カテゴリーIDキーワード
 		if (categoryId != null && keyword.length() > 0) {
 			if ("deadlineAsc".equals(sort)) {
-				taskList = taskRepository.findByCategoryIdAndTitleContainingOrderByDeadlineAsc(categoryId, keyword);
+				taskList = taskRepository.findByUserIdAndCategoryIdAndTitleContainingOrderByDeadlineAsc(userId,
+						categoryId, keyword);
 			} else if ("importanceAsc".equals(sort)) {
-				taskList = taskRepository.findByCategoryIdAndTitleContainingOrderByImportanceDesc(categoryId, keyword);
+				taskList = taskRepository.findByUserIdAndCategoryIdAndTitleContainingOrderByImportanceDesc(userId,
+						categoryId, keyword);
 			} else if ("routineAsc".equals(sort)) {
-				taskList = taskRepository.findByCategoryIdAndTitleContainingOrderByRoutineAsc(categoryId, keyword);
+				taskList = taskRepository.findByUserIdAndCategoryIdAndTitleContainingOrderByRoutineAsc(userId,
+						categoryId, keyword);
 			} else {
-				taskList = taskRepository.findByCategoryIdAndTitleContaining(categoryId, keyword);
+				taskList = taskRepository.findByUserIdAndCategoryIdAndTitleContaining(userId, categoryId, keyword);
 			}
 		}
 		// カテゴリーID
 		else if (categoryId != null && keyword.length() == 0) {
 			if ("deadlineAsc".equals(sort)) {
-				taskList = taskRepository.findByCategoryIdOrderByDeadlineAsc(categoryId);
+				taskList = taskRepository.findByUserIdAndCategoryIdOrderByDeadlineAsc(userId, categoryId);
 			} else if ("importanceAsc".equals(sort)) {
-				taskList = taskRepository.findByCategoryIdOrderByImportanceDesc(categoryId);
+				taskList = taskRepository.findByUserIdAndCategoryIdOrderByImportanceDesc(userId, categoryId);
 			} else if ("routineAsc".equals(sort)) {
-				taskList = taskRepository.findByCategoryIdOrderByRoutineAsc(categoryId);
+				taskList = taskRepository.findByUserIdAndCategoryIdOrderByRoutineAsc(userId, categoryId);
 			} else {
-				taskList = taskRepository.findByCategoryId(categoryId);
+				taskList = taskRepository.findByUserIdAndCategoryId(userId, categoryId);
 			}
 		}
 		// キーワード
 		else if (categoryId == null && keyword.length() > 0) {
 			if ("deadlineAsc".equals(sort)) {
-				taskList = taskRepository.findByTitleContainingOrderByDeadlineAsc(keyword);
+				taskList = taskRepository.findByUserIdAndTitleContainingOrderByDeadlineAsc(userId, keyword);
 			} else if ("importanceAsc".equals(sort)) {
-				taskList = taskRepository.findByTitleContainingOrderByImportanceDesc(keyword);
+				taskList = taskRepository.findByUserIdAndTitleContainingOrderByImportanceDesc(userId, keyword);
 			} else if ("routineAsc".equals(sort)) {
-				taskList = taskRepository.findByTitleContainingOrderByRoutineAsc(keyword);
+				taskList = taskRepository.findByUserIdAndTitleContainingOrderByRoutineAsc(userId, keyword);
 			} else {
-				taskList = taskRepository.findByTitleContaining(keyword);
+				taskList = taskRepository.findByUserIdAndTitleContaining(userId, keyword);
 			}
 		}
-		// 無し
+		// 条件なし
 		else {
 			if ("deadlineAsc".equals(sort)) {
-				taskList = taskRepository.findAllByOrderByDeadlineAsc(); // リポジトリの命名法に合わせます
+				taskList = taskRepository.findByUserIdOrderByDeadlineAsc(userId);
 			} else if ("importanceAsc".equals(sort)) {
-				taskList = taskRepository.findAllByOrderByImportanceDesc();
+				taskList = taskRepository.findByUserIdOrderByImportanceDesc(userId);
 			} else if ("routineAsc".equals(sort)) {
-				taskList = taskRepository.findAllByOrderByRoutineAsc();
+				taskList = taskRepository.findByUserIdOrderByRoutineAsc(userId);
 			} else {
-				taskList = taskRepository.findAll();
+				taskList = taskRepository.findByUserId(userId);
 			}
 		}
-
+		for (Task taskT : taskList) {
+			if (taskT.getIsToday() == true) {
+				taskT.setDeadline(LocalDate.now());
+			}
+		}
 		model.addAttribute("cId", categoryId);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("sort", sort);
@@ -104,7 +117,10 @@ public class TaskController {
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categories", categoryList);
 		LocalDate todayDate = LocalDate.now();
-		Task task = new Task(0, "", todayDate, 0, 0, "", false);
+		Task task = new Task(0, account.getId(), "", todayDate, 0, 0, "", false);
+		if (task.getRoutine() > 0) {
+			task.setIsToday(true);
+		}
 		model.addAttribute("tasks", task);
 		return "addTask";
 	}
@@ -118,7 +134,7 @@ public class TaskController {
 			@RequestParam(defaultValue = "") Integer routine,
 			@RequestParam(defaultValue = "") String memo,
 			Model model) {
-		Task task = new Task(categoryId, title, deadline, importance, routine, memo, false);
+		Task task = new Task(categoryId, account.getId(), title, deadline, importance, routine, memo, false);
 		List<String> errorList = new ArrayList<>();
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categories", categoryList);
@@ -134,6 +150,12 @@ public class TaskController {
 			model.addAttribute("tasks", task);
 			return "addTask";
 		}
+
+		if (task.getRoutine() > 0) {
+			task.setIsToday(true);
+			task.setDeadline(LocalDate.now());
+		}
+
 		taskRepository.save(task);
 		return "redirect:/tasks";
 	}
@@ -200,6 +222,7 @@ public class TaskController {
 		Task task = taskRepository.findById(id).get();
 		if (task.getRoutine() > 0 && task.getIsToday() == true) {
 			task.setIsToday(false);
+			task.setDeadline(LocalDate.now());
 			taskRepository.save(task);
 		} else {
 			taskRepository.deleteById(id);

@@ -7,36 +7,43 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.entity.Task;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
-	// SELECT * FROM items WHERE category_id = ?
-	List<Task> findByCategoryId(Integer categoryId);
+	//	userId
+	List<Task> findByUserId(Integer userId);
 
-	List<Task> findByTitleContaining(String keyword);
+	List<Task> findByUserIdOrderByDeadlineAsc(Integer userId);
 
-	List<Task> findByCategoryIdAndTitleContaining(Integer categoryId, String keyword);
+	List<Task> findByUserIdOrderByImportanceDesc(Integer userId);
 
-	//ソート
-	List<Task> findByCategoryIdAndTitleContainingOrderByDeadlineAsc(Integer categoryId, String keyword);
+	List<Task> findByUserIdOrderByRoutineAsc(Integer userId);
 
-	List<Task> findByCategoryIdAndTitleContainingOrderByImportanceDesc(Integer categoryId, String keyword);
+	//	userId categoryId
+	List<Task> findByUserIdAndCategoryId(Integer userId, Integer categoryId);
 
-	List<Task> findByCategoryIdAndTitleContainingOrderByRoutineAsc(Integer categoryId, String keyword);
+	List<Task> findByUserIdAndCategoryIdOrderByDeadlineAsc(Integer userId, Integer categoryId);
 
-	List<Task> findByCategoryIdOrderByDeadlineAsc(Integer categoryId);
+	List<Task> findByUserIdAndCategoryIdOrderByImportanceDesc(Integer userId, Integer categoryId);
 
-	List<Task> findByCategoryIdOrderByImportanceDesc(Integer categoryId);
+	List<Task> findByUserIdAndCategoryIdOrderByRoutineAsc(Integer userId, Integer categoryId);
 
-	List<Task> findByCategoryIdOrderByRoutineAsc(Integer categoryId);
+	//	userId keyword
+	List<Task> findByUserIdAndTitleContaining(Integer userId, String keyword);
 
-	List<Task> findByTitleContainingOrderByDeadlineAsc(String keyword);
+	List<Task> findByUserIdAndTitleContainingOrderByDeadlineAsc(Integer userId, String keyword);
 
-	List<Task> findByTitleContainingOrderByImportanceDesc(String keyword);
+	List<Task> findByUserIdAndTitleContainingOrderByImportanceDesc(Integer userId, String keyword);
 
-	List<Task> findByTitleContainingOrderByRoutineAsc(String keyword);
+	List<Task> findByUserIdAndTitleContainingOrderByRoutineAsc(Integer userId, String keyword);
 
-	List<Task> findAllByOrderByDeadlineAsc();
+	//	3つ
+	List<Task> findByUserIdAndCategoryIdAndTitleContainingOrderByDeadlineAsc(Integer userId,
+			Integer categoryId, String keyword);
 
-	List<Task> findAllByOrderByImportanceDesc();
+	List<Task> findByUserIdAndCategoryIdAndTitleContainingOrderByImportanceDesc(Integer userId,
+			Integer categoryId, String keyword);
 
-	List<Task> findAllByOrderByRoutineAsc();
+	List<Task> findByUserIdAndCategoryIdAndTitleContainingOrderByRoutineAsc(Integer userId,
+			Integer categoryId, String keyword);
 
+	List<Task> findByUserIdAndCategoryIdAndTitleContaining(Integer userId,
+			Integer categoryId, String keyword);
 }

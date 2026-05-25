@@ -50,11 +50,11 @@ public class Task {
 	//		this.memo = memo;
 	//	}
 
-	public Task(Integer categoryId, String title, LocalDate deadline, Integer importance,
+	public Task(Integer categoryId, Integer userId, String title, LocalDate deadline, Integer importance,
 			Integer routine, String memo, Boolean isToday) {
-
 		this.categoryId = categoryId;
 		this.title = title;
+		this.userId = userId;
 		this.deadline = deadline;
 		this.importance = importance;
 		this.routine = routine;

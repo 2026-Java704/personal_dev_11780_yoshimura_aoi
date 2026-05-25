@@ -10,18 +10,32 @@
 <body>
 	<header th:replace="~{header}"></header>
 	<hr>
-	<nav>
-		<a href="/tasks">一覧</a>
-		<a th:each="category:${categories}" th:href="@{/tasks(categoryId=${category.id},keyword=${keyword})}" th:text="${category.name}"
-			 style="margin-right: 5px;"></a>
-		<form action="/tasks" method="get">
-			<input class="form-input" type="text" name="keyword" th:value="${keyword}"  placeholder="タスク名検索">
-			<button id="btn-search" >検索</button>
-		</form>
-		<a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='deadlineAsc')}">期日</a>
-		<a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='importanceAsc')}">重要度</a>
-		<a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='routineAsc')}">ルーティーン</a>
+	<nav>	   
+	    <a th:href="@{/tasks(categoryId='', keyword=${keyword}, sort=${sort})}"
+	       th:classappend="${#strings.isEmpty(cId)} ? 'active' : ''">カテゴリー一覧</a>
+	    	  
+	    <a th:each="category:${categories}" 
+	       th:href="@{/tasks(categoryId=${category.id}, keyword=${keyword}, sort=${sort})}" 
+	       th:text="${category.name}" 
+	       th:classappend="${category.id == cId} ? 'active' : ''"></a>
+	       
+	    <form action="/tasks" method="get">
+	        <input type="hidden" name="categoryId" th:value="${cId}" />
+			<input type="hidden" name="sort" th:value="${sort}" />
+	        <input class="form-input" type="text" name="keyword" th:value="${keyword}" placeholder="タスク名検索">
+	        <button id="btn-search">検索</button>
+	    </form>
+	   
+	    <a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='deadlineAsc')}"
+	       th:classappend="${sort == 'deadlineAsc'} ? 'active' : ''">期日</a>
+	    <a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='importanceAsc')}"
+	       th:classappend="${sort == 'importanceAsc'} ? 'active' : ''">重要度</a>	       
+	    <a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='routineAsc')}"
+	       th:classappend="${sort == 'routineAsc'} ? 'active' : ''">ルーティーン</a>	       
+	    <a th:href="@{/tasks(categoryId=${cId}, keyword=${keyword}, sort='')}"
+	       th:classappend="${#strings.isEmpty(sort)} ? 'active' : ''">ソート無し</a>
 	</nav>
+
 	<main>
 		<h3>ルーティン</h3>
 		<table border="1">
@@ -32,22 +46,25 @@
 				<th>重要度</th>
 				<th>完了</th>
 			</tr>
-			<tr th:if="${task.routine > 0 and task.isToday == true}" th:each="task:${tasks}">
-				<td th:text="${task.id}"></td>
-				<td><a th:href="@{/tasks/{id}/detail(id=${task.id})}" th:text="${task.title}"></a></td>
-				<td th:each="category:${categories}" th:if="${category.id==task.categoryId}" th:text="${category.name}">
-				</td>
-				<td th:switch="${task.importance}">
-					<div th:case="0">低</div>
-					<div th:case="1">中</div>
-					<div th:case="2">高</div>
-				</td>
-				<td>
-					<form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post">
-						<button>完了</button>
-					</form>
-				</td>
-			</tr>
+			<th:block th:each="task, stat: ${tasks}">
+				<tr th:if="${task.routine > 0 and task.isToday == true}">
+					<!--			<tr th:if="${task.routine > 0 and task.isToday == true}" th:each="task, stat:${tasks}">-->
+					<td th:text="${stat.count}"></td>
+					<td><a th:href="@{/tasks/{id}/detail(id=${task.id})}" th:text="${task.title}"></a></td>
+					<td th:each="category:${categories}" th:if="${category.id==task.categoryId}"
+						th:text="${category.name}">
+					</td>
+					<td th:switch="${task.importance}">
+						<div class="improtance-0" th:case="0">低</div>
+						<div class="improtance-1" th:case="1">中</div>
+						<div class="improtance-2" th:case="2">高</div>
+					</td>
+					<td>
+						<form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post">
+							<button>完了</button>
+						</form>
+					</td>
+				</tr>
 		</table>
 
 
@@ -60,22 +77,24 @@
 				<th>重要度</th>
 				<th>完了</th>
 			</tr>
-			<tr th:if="${task.isToday}" th:each="task:${tasks}">
-				<td th:text="${task.id}"></td>
-				<td><a th:href="@{/tasks/{id}/detail(id=${task.id})}" th:text="${task.title}"></a></td>
-				<td th:each="category:${categories}" th:if="${category.id==task.categoryId}" th:text="${category.name}">
-				</td>
-				<td th:switch="${task.importance}">
-					<div th:case="0">低</div>
-					<div th:case="1">中</div>
-					<div th:case="2">高</div>
-				</td>
-				<td>
-					<form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post">
-						<button>完了</button>
-					</form>
-				</td>
-			</tr>
+			<th:block th:each="task, stat: ${tasks}">
+				<tr th:if="${task.isToday}">
+					<td th:text="${stat.count}"></td>
+					<td><a th:href="@{/tasks/{id}/detail(id=${task.id})}" th:text="${task.title}"></a></td>
+					<td th:each="category:${categories}" th:if="${category.id==task.categoryId}"
+						th:text="${category.name}">
+					</td>
+					<td th:switch="${task.importance}">
+						<div class="improtance-0" th:case="0">低</div>
+						<div class="improtance-1" th:case="1">中</div>
+						<div class="improtance-2" th:case="2">高</div>
+					</td>
+					<td>
+						<form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post">
+							<button>完了</button>
+						</form>
+					</td>
+				</tr>
 		</table>
 
 		<h3>全体</h3>
@@ -89,16 +108,16 @@
 				<th>ルーティン</th>
 				<th>本日に追加</th>
 			</tr>
-			<tr th:each="task:${tasks}">
-				<td th:text="${task.id}"></td>
+			<tr th:each="task, stat:${tasks}">
+				<td th:text="${stat.count}"></td>
 				<td><a th:href="@{/tasks/{id}/detail(id=${task.id})}" th:text="${task.title}"></a></td>
 				<td th:each="category:${categories}" th:if="${category.id==task.categoryId}" th:text="${category.name}">
 				</td>
 				<td th:text="${task.deadline}"></td>
 				<td th:switch="${task.importance}">
-					<div th:case="0">低</div>
-					<div th:case="1">中</div>
-					<div th:case="2">高</div>
+					<div class="improtance-0" th:case="0">低</div>
+					<div class="improtance-1" th:case="1">中</div>
+					<div class="improtance-2" th:case="2">高</div>
 				</td>
 				<td th:switch="${task.routine}">
 					<div th:case="0">無</div>
